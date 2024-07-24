@@ -1,0 +1,24 @@
+/* Hidescollbar.css */
+.bodyhome {
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+}
+
+.left-container,
+.right-container {
+    overflow-y: auto;
+    height: calc(100vh - 64px);
+    /* Adjust according to your header height */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
