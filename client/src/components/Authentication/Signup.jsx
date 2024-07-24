@@ -1,6 +1,6 @@
-const apiUrl = process.env.REACT_APP_API_URL;
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const Signup = () => {
   const [username, setUsername] = useState('');

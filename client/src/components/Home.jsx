@@ -1,10 +1,10 @@
-const apiUrl = process.env.REACT_APP_API_URL;
 import React, { useEffect, useState } from 'react';
 import './Hidescollbar.css';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Chats from './Chats';
 import Profile from './Profile';
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const Home = () => {
     const [friends, setFriends] = useState([]);

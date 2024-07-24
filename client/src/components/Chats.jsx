@@ -1,7 +1,7 @@
-const apiUrl = process.env.REACT_APP_API_URL;
 import io from 'socket.io-client';
 import React, { useState, useEffect, useRef } from 'react';
 import Cookies from 'js-cookie';
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const socket = io(`${apiUrl}`);
 

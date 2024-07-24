@@ -1,8 +1,8 @@
-const apiUrl = process.env.REACT_APP_API_URL;
 import React, { useState } from 'react';
 import './Hidescollbar.css'; 
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const Search = () => {
   const [name, setUsername] = useState('');
