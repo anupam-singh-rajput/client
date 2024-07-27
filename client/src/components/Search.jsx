@@ -10,10 +10,9 @@ const Search = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [searched, setSearched] = useState(false); // Track if user has performed a search
   const navigate = useNavigate();
-
+  const token = Cookies.get('token');
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const token = Cookies.get('token');
     
     // Check if username input is empty
     if (!name.trim()) {
@@ -56,12 +55,6 @@ const Search = () => {
   };
   
   const addToChatList = async (email) => {
-    const token = Cookies.get('token');
-            console.log(token);
-            if (!token) {
-                alert('Please login again');
-                return;
-            }
     try {
       const response = await fetch(`${apiUrl}/api/users/add-to-chat`, {
         method: 'POST',
@@ -69,10 +62,8 @@ const Search = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
+        body: JSON.stringify({ email }),
         credentials: 'include',
-        body: JSON.stringify({
-          email
-        }),
       });
       const data = await response.json()
       if (response.ok) {
