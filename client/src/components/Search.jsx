@@ -120,7 +120,7 @@ const Search = () => {
               className="bg-blue-500 text-white px-3 py-1 rounded-md ml-auto"
               onClick={() => addToChatList(user.email)}
             >
-              Add To Chat
+              {user.email}
             </button>
           </div>
         ))}
