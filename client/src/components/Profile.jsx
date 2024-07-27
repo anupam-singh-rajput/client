@@ -43,7 +43,7 @@ const Profile = () => {
             }
 
             try {
-                const response = await fetch('http://localhost:3001/api/users/friendrequests', {
+                const response = await fetch(`${apiUrl}/api/users/friendrequests`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ const Profile = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:3001/api/users/acceptfriendrequest', {
+            const response = await fetch(`${apiUrl}/api/users/acceptfriendrequest`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
