@@ -63,7 +63,7 @@ const Search = () => {
                 return;
             }
     try {
-      const response = await fetch('http://localhost:3001/api/users/add-to-chat', {
+      const response = await fetch('${apiUrl}/api/users/add-to-chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
