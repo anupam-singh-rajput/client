@@ -14,11 +14,6 @@ const Home = () => {
 
     useEffect(() => {
         const token = Cookies.get('token');
-        if (!token) {
-            alert('Please login again');
-            navigate("/login");
-            return;
-        }
         // Fetch friends from the backend
         const fetchFriends = async () => {
             try {
