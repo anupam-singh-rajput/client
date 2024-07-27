@@ -8,10 +8,10 @@ const Profile = () => {
     const [friendRequests, setFriendRequests] = useState([]);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const token = Cookies.get('token');
 
     useEffect(() => {
         const fetchUserProfile = async () => {
-            const token = Cookies.get('token');
 
             try {
                 const response = await fetch(`${apiUrl}/api/users/user`, {
@@ -36,12 +36,6 @@ const Profile = () => {
         };
 
         const fetchFriendRequests = async () => {
-            const token = Cookies.get('token');
-            if (!token) {
-                setError('Please login again');
-                return;
-            }
-
             try {
                 const response = await fetch(`${apiUrl}/api/users/friendrequests`, {
                     method: 'GET',
@@ -67,12 +61,6 @@ const Profile = () => {
     }, []);
 
     const acceptFriendRequest = async (email) => {
-        const token = Cookies.get('token');
-        if (!token) {
-            setError('Please login again');
-            return;
-        }
-
         try {
             const response = await fetch(`${apiUrl}/api/users/acceptfriendrequest`, {
                 method: 'POST',
