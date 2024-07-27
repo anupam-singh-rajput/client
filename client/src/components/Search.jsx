@@ -13,6 +13,7 @@ const Search = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const token = Cookies.get('token');
     
     // Check if username input is empty
     if (!name.trim()) {
