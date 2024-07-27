@@ -12,11 +12,6 @@ const Profile = () => {
     useEffect(() => {
         const fetchUserProfile = async () => {
             const token = Cookies.get('token');
-            if (!token) {
-                alert('Please login again');
-                navigate("/login");
-                return;
-            }
 
             try {
                 const response = await fetch(`${apiUrl}/api/users/user`, {
