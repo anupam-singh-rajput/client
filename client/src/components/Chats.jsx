@@ -134,114 +134,127 @@
 
 // export default Chats;
 
-import React, { useEffect, useState } from 'react';
-import './Hidescollbar.css';
-import { useNavigate } from 'react-router-dom';
+import io from 'socket.io-client';
+import React, { useState, useEffect, useRef } from 'react';
 import Cookies from 'js-cookie';
-import Chats from './Chats';
-import Profile from './Profile';
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const Home = () => {
-    const [friends, setFriends] = useState([]);
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [username, setUsername] = useState('');
-    const [isMobileView, setIsMobileView] = useState(false);
-    const navigate = useNavigate();
+const socket = io(`${apiUrl}`);
+
+const Chats = React.memo(({ selectedUser, onBack }) => {
+    const [inpmsg, setinpmsg] = useState('');
+    const [roomid, setroomid] = useState('');
+    const [loggedemail, setloggedemail] = useState('');
+    const [postmsgs, setpostmsgs] = useState([]);
+    const token = Cookies.get('token');
+    const messagesEndRef = useRef(null);
 
     useEffect(() => {
-        const token = Cookies.get('token');
-        // Fetch friends from the backend
-        const fetchFriends = async () => {
+        const createRoom = async () => {
             try {
-                const response = await fetch(`${apiUrl}/api/users/getuser`, {
-                    method: 'GET',
+                if (!selectedUser) {
+                    throw new Error('Selected user is not defined');
+                }
+
+                const response = await fetch(`${apiUrl}/api/users/chatroom`, {
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
                     credentials: 'include',
+                    body: JSON.stringify({ email: selectedUser }),
                 });
 
                 const data = await response.json();
+                setroomid(data.chatRoom._id);
+                setloggedemail(data.email);
+                setpostmsgs(data.messages);
                 console.log(data);
-                setUsername(data.name);
 
-                if (data.success && Array.isArray(data.friends)) {
-                    setFriends(data.friends);
-                } else {
-                    console.error('Unexpected response structure:', data);
-                }
             } catch (error) {
-                console.error('Error fetching friends:', error);
+                console.error('Error creating room:', error.message);
             }
         };
 
-        fetchFriends();
-    }, [navigate]);
+        if (selectedUser) {
+            createRoom();
+        }
+    }, [selectedUser, token]);
 
-    const handleUserClick = (email) => {
-        setSelectedUser(email);
-        setIsMobileView(true); // Mobile view me chat section kholne ke liye
+    useEffect(() => {
+        if (roomid) {
+            socket.emit('joinRoom', roomid);
+        }
+    }, [roomid]);
+
+    const sendMessage = () => {
+        if (!loggedemail) {
+            console.error('Logged email is not defined');
+            return;
+        }
+        socket.emit('email&message&roomid', [selectedUser, inpmsg, roomid, loggedemail]);
+        setinpmsg('');
     };
 
-    const handleBackToFriends = () => {
-        setIsMobileView(false); // Mobile view me list pe wapas aane ke liye
+    useEffect(() => {
+        const handleMessage = (serverMsg) => {
+            if (serverMsg && serverMsg.content) {
+                setpostmsgs((prevMsgs) => [...prevMsgs, serverMsg]);
+                scrollToBottom();
+            } else {
+                console.error('Received message is not in expected format:', serverMsg);
+            }
+        };
+
+        socket.on('message', handleMessage);
+
+        return () => {
+            socket.off('message', handleMessage);
+        };
+    }, []);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [postmsgs]);
 
     return (
-        <div className="bodyhome bg-gray-200 w-screen h-screen fixed overflow-hidden ml-4">
-            <div className="header flex justify-between mt-2 mb-2 ">
-                <div className="header-search ml-4">
-                    <button 
-                        type="submit"  
-                        className="bg-gradient-to-tr from-purple-900 to-indigo-900 text-white px-4 py-2 focus:outline-none w-80"
-                        onClick={() => { navigate("/search") }}
-                    >
-                        Search
-                    </button>
+        <div className="flex flex-col h-full">
+            <div className="chat-header">
+                <button onClick={onBack} className="text-blue-500">Back</button>
+                <div className="ml-4">
+                    {selectedUser && <span>{selectedUser}</span>}
                 </div>
-                <div className="header-search ml-4">
-                    {username}
-                </div>
-                <div className="header-profile">
-                    <button 
-                        type="submit"  
-                        className="bg-gradient-to-tr text-white from-purple-900 to-indigo-900 text-1rem px-4 py-2 focus:outline-none mr-8 w-32"
-                        onClick={() => { navigate('/profile') }}
-                    >
-                        Profile
-                    </button>
-                </div> 
-            </div>  
-            <div className="container flex">
-                <div className={`left-container ${isMobileView ? 'hidden' : 'block'} w-[21%] h-full bg-white scrollbar-hide overflow-y-scroll`}>
-                    {Array.isArray(friends) && friends.map((friend) => (
-                        <div 
-                            key={friend.email} 
-                            className={`user w-[100%] h-[100px] flex justify-center items-center border-b-2 border-indigo-900 pl-2 cursor-pointer ${
-                                selectedUser === friend.email ? 'bg-gradient-to-tr from-purple-900 to-indigo-900 text-white text-base' : 'bg-white'
-                            }`}
-                            onClick={() => handleUserClick(friend.email)} 
-                        >
-                            <div className="profile-pic w-[30%] h-[90%] bg-black rounded-full">
-                                <img src={friend.profilePhoto || "path_to_default_image"} alt="" />
-                            </div>
-                            <div className="username w-[70%] h-[90%] text-left pl-2 content-center">
-                                <p>{friend.name}</p>
-                            </div>
+            </div>
+            <div className="messages flex flex-col p-4 overflow-y-auto flex-grow">
+                {postmsgs.map((msg) => (
+                    <div key={msg._id} className="message-container flex flex-col mb-4">
+                        <div className="message">
+                            <span className="font-semibold">{msg.sender}:</span> {msg.content}
                         </div>
-                    ))}
-                </div>
-                <div className={`right-container ${isMobileView ? 'active' : ''} w-[77.8%] h-full bg-white relative`}>
-                    <Chats 
-                        selectedUser={selectedUser} 
-                        onBack={handleBackToFriends} // Back button ke liye prop pass kar rahe hain
-                    />
-                </div>
+                        <span className="text-sm text-gray-500">{new Date(msg.timestamp).toLocaleString()}</span>
+                    </div>
+                ))}
+                <div ref={messagesEndRef} />
+            </div>
+            <div className="flex items-center p-4">
+                <input
+                    className="border-2 border-gray-300 rounded-full flex-grow p-2 mr-2"
+                    type="text"
+                    value={inpmsg}
+                    onChange={(e) => setinpmsg(e.target.value)}
+                    placeholder="Type your message here..."
+                />
+                <button className="bg-blue-500 text-white px-4 py-2 rounded-full" onClick={sendMessage}>
+                    Send
+                </button>
             </div>
         </div>
     );
-};
+});
 
-export default Home;
+export default Chats;
