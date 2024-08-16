@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Authentication from "./components/Authentication/Authentication";
 import Forget from "./components/Authentication/Forget";
@@ -9,7 +8,7 @@ import Profile from "./components/Profile";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App h-[100vh]" >
       <Router>
         <Routes>
           <Route path="*" element={<Authentication />} />
