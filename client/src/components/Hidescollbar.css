@@ -23,7 +23,7 @@
     /* Firefox */
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 500px) {
     .container {
         flex-direction: column;
         width: 100%;
