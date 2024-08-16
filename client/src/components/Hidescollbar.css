@@ -1,17 +1,46 @@
 /* Hidescollbar.css */
-.bodyhome {
+/* .bodyhome {
     height: 100vh;
     overflow: hidden;
     margin: 0;
-} 
+}  */
 
-.left-container,
+/* .left-container,
 .right-container {
     overflow-y: auto;
     height: calc(100vh - 64px);
     /* Adjust according to your header height */
-} 
+}  */
  
+/* .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+} */
+
+/* .scrollbar-hide {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+} */
+
+* {
+    box-sizing: border-box;
+}
+
+.body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.left-container,
+.right-container {
+    height: calc(100vh - 64px);
+}
+
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
 }
@@ -23,3 +52,28 @@
     /* Firefox */
 }
 
+@media screen and (max-width: 600px) {
+    .user{
+        display: flex;
+        flex-direction: column;
+        height: 20vmax;
+        padding-top: 2vmax;
+        padding-right: 1vmax;
+        
+    }
+
+    .profile-pic{
+        width: 9vmax;
+    }
+
+    .username{
+        padding: 0;
+        text-align: right;
+    }
+    .msg{
+        text-align: center;
+        padding:10vmax 0 0 0;
+        width: 100%;
+        
+    }
+}
