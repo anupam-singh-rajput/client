@@ -1,5 +1,5 @@
 /* Hidescollbar.css */
-.bodyhome {
+/* .bodyhome {
     height: 100vh;
     overflow: hidden;
     margin: 0;
@@ -21,7 +21,7 @@
     /* IE and Edge */
     scrollbar-width: none;
     /* Firefox */
-}
+} */
 
 @media(max-width: 500px) {
     .container {
