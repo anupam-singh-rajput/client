@@ -138,7 +138,7 @@ import './Hidescollbar.css';
 import io from 'socket.io-client';
 import React, { useState, useEffect, useRef } from 'react';
 import Cookies from 'js-cookie';
-const apiUrl = 'http://localhost:3001';
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const socket = io(`${apiUrl}`);
 
