@@ -104,7 +104,7 @@
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-const apiUrl = 'http://localhost:3001';
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const Login = () => {
   const [email, setEmail] = useState('');
