@@ -23,15 +23,3 @@
     /* Firefox */
 }
 
-@media screen and (max-width: 500px) {
-    .left-container{
-        width: 100%;
-        height: 100%;
-    }
-}
-@media screen and (min-width: 510px){
-    .right-container{
-        width: 79%;
-        height: 100%;
-    }
-}
