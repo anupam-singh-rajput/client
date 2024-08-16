@@ -115,7 +115,7 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-const apiUrl = 'http://localhost:3001';
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const Signup = () => {
   const [username, setUsername] = useState('');
