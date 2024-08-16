@@ -54,17 +54,10 @@
         flex-direction: column !important;
     }
 
-    .container {
-        flex-direction: column !important;
-    }
 
     .left-container {
-        display: none !important; /* Hide left-container on mobile */
-    }
-
-    .right-container {
-        width: 100% !important;
-        height: 100% !important;
+        width:100%  !important; /* Hide left-container on mobile */
+        height:100% !important;
     }
 }
 
