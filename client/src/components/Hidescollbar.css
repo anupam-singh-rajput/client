@@ -24,8 +24,6 @@
 }
  */
 /* Hidescollbar.css */
-
-/* Existing desktop styles */
 .bodyhome {
     height: 100vh;
     overflow: hidden;
@@ -35,7 +33,8 @@
 .left-container,
 .right-container {
     overflow-y: auto;
-    height: calc(100vh - 64px); /* Adjust according to your header height */
+    height: calc(100vh - 64px);
+    /* Adjust according to your header height */
 }
 
 .scrollbar-hide::-webkit-scrollbar {
@@ -43,21 +42,21 @@
 }
 
 .scrollbar-hide {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
 
-/* Mobile styles */
-@media (max-width: 500px) { /* Adjust breakpoint as needed */
-    .bodyhome {
-        display: flex !important; 
-        flex-direction: column !important;
-    }
-
-
-    .left-container {
-        width:100%  !important; /* Hide left-container on mobile */
-        height:100% !important;
+@media screen and (max-width: 500px) {
+    .left-container{
+        width: 100%;
+        height: 100%;
     }
 }
-
+@media screen and (min-width: 510px){
+    .right-container{
+        width: 79%;
+        height: 100%;
+    }
+}
