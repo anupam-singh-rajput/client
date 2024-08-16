@@ -105,6 +105,7 @@
 // };
 
 // export default Home;
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -159,32 +160,7 @@ const Home = () => {
         setSelectedUser(null);
     };
 
-    const isMobile = () => window.innerWidth <= 768;
-
-    useEffect(() => {
-        const handleTouchStart = (e) => {
-            if (isMobile()) {
-                setTouchstartX(e.touches[0].screenX);
-            }
-        };
-
-        const handleTouchEnd = (e) => {
-            if (isMobile()) {
-                setTouchendX(e.changedTouches[0].screenX);
-                if (touchendX > touchstartX) {
-                    handleSwipeBack(); // If swiped right, go back to left-container
-                }
-            }
-        };
-
-        document.addEventListener('touchstart', handleTouchStart);
-        document.addEventListener('touchend', handleTouchEnd);
-
-        return () => {
-            document.removeEventListener('touchstart', handleTouchStart);
-            document.removeEventListener('touchend', handleTouchEnd);
-        };
-    }, [touchstartX, touchendX]);
+    
 
     return (
         <div className="bg-gray-200 w-screen h-screen fixed overflow-hidden">
@@ -192,7 +168,7 @@ const Home = () => {
                 <button
                     type="button"
                     className="bg-gradient-to-tr from-purple-900 to-indigo-900 text-white px-4 py-2 focus:outline-none w-24"
-                    onClick={() => navigate("/search")}
+                    onClick={() => { navigate("/search") }}
                 >
                     Search
                 </button>
@@ -200,14 +176,14 @@ const Home = () => {
                 <button
                     type="button"
                     className="bg-gradient-to-tr from-purple-900 to-indigo-900 text-white px-4 py-2 focus:outline-none w-24"
-                    onClick={() => navigate('/profile')}
+                    onClick={() => { navigate('/profile') }}
                 >
                     Profile
                 </button>
             </div>
 
             <div className="container h-[90%] flex flex-col md:flex-row">
-                <div className={`left-container ${selectedUser ? 'hidden md:block' : 'block'} md:w-[21%] w-full h-full bg-white scrollbar-hide overflow-y-scroll`}>
+                <div className={`left-container ${selectedUser ? 'hidden' : 'block'} md:w-[21%] w-full h-full bg-white scrollbar-hide overflow-y-scroll`}>
                     {Array.isArray(friends) && friends.map((friend) => (
                         <div
                             key={friend.email}
